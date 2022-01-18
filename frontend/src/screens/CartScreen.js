@@ -39,7 +39,7 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
   };
 
-  const checkOutHandler = () => {
+  const checkoutHandler = () => {
     navigate("/login?redirect=shipping");
   };
 
@@ -113,7 +113,7 @@ const CartScreen = () => {
                 type="button"
                 className="w-100"
                 disabled={cartItems.length === 0}
-                onClick={checkOutHandler}
+                onClick={checkoutHandler}
               >
                 Proceed To Checkout
               </Button>
