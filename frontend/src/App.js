@@ -44,6 +44,7 @@ function App() {
             />
             <Route path="/admin/orderlist" element={<OrderListScreen />} />
             <Route path="/cart" element={<CartScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} />
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </Container>
