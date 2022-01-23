@@ -6,7 +6,9 @@ function Footer() {
     <footer>
       <Container>
         <Row>
-          <Col className="text-center py-3">Copyright &copy; SLEEGG</Col>
+          <Col className="text-center py-3">
+            Copyright &copy; {new Date().getFullYear()} SLEEGG
+          </Col>
         </Row>
       </Container>
     </footer>
