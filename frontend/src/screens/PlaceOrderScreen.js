@@ -13,10 +13,9 @@ const PlaceOrderScreen = () => {
   const cart = useSelector(state => state.cart);
 
   // Calculate items price
-  cart.itemsPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  cart.itemsPrice = cart.cartItems
+    .reduce((acc, item) => acc + item.price * item.qty, 0)
+    .toFixed(2);
 
   // Calculate shipping price
   cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2);
@@ -99,7 +98,8 @@ const PlaceOrderScreen = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          ${item.price} x {item.qty} = ${item.qty * item.price}
+                          ${item.price} x {item.qty} = $
+                          {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
