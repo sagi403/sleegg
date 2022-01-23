@@ -70,7 +70,7 @@ function ProductScreen() {
       ) : (
         <>
           <Meta title={product.name} />
-          <Row>
+          <Row className="mb-4">
             <Col md={6}>
               <Image src={product.image} alt={product.name} />
             </Col>
@@ -86,9 +86,7 @@ function ProductScreen() {
                   />
                 </ListGroup.Item>
                 <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-                <ListGroup.Item>
-                  Description: {product.description}
-                </ListGroup.Item>
+                <ListGroup.Item>{product.description}</ListGroup.Item>
               </ListGroup>
             </Col>
             <Col md={3}>
@@ -144,6 +142,14 @@ function ProductScreen() {
                   </ListGroup.Item>
                 </ListGroup>
               </Card>
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col md={10}>
+              <h2>Description</h2>
+              <ListGroup variant="flush">
+                <ListGroup.Item>{product.longDescription}</ListGroup.Item>
+              </ListGroup>
             </Col>
           </Row>
           <Row>
