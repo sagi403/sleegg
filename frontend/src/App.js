@@ -18,6 +18,7 @@ import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
+import CouponListScreen from "./screens/CouponListScreen";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
               element={<ProductEditScreen />}
             />
             <Route path="/admin/orderlist" element={<OrderListScreen />} />
+            <Route path="/admin/couponlist" element={<CouponListScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/search/:keyword" element={<HomeScreen />} />
             <Route path="/page/:pageNumber" element={<HomeScreen />} />
