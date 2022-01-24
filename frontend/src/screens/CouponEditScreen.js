@@ -29,19 +29,26 @@ const CouponEditScreen = () => {
     success: successUpdate,
   } = couponUpdate;
 
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    if (successUpdate) {
-      dispatch({ type: COUPON_UPDATE_RESET });
-      navigate("/admin/couponlist");
-    } else {
-      if (!coupon.code || coupon._id !== couponId) {
-        dispatch(listCouponDetails(couponId));
+    if (userInfo && userInfo.isAdmin) {
+      if (successUpdate) {
+        dispatch({ type: COUPON_UPDATE_RESET });
+        navigate("/admin/couponlist");
       } else {
-        setCode(coupon.code);
-        setDiscount(coupon.discount);
+        if (!coupon.code || coupon._id !== couponId) {
+          dispatch(listCouponDetails(couponId));
+        } else {
+          setCode(coupon.code);
+          setDiscount(coupon.discount);
+        }
       }
+    } else {
+      navigate("/login");
     }
-  }, [dispatch, navigate, coupon, couponId, successUpdate]);
+  }, [dispatch, navigate, userInfo, coupon, couponId, successUpdate]);
 
   const submitHandler = e => {
     e.preventDefault();

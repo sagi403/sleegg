@@ -11,7 +11,7 @@ const getCoupons = asyncHandler(async (req, res) => {
 
 // @desc    Fetch single coupon
 // @route   GET /api/coupons/:id
-// @access  Private
+// @access  Private/Admin
 const getCouponByCode = asyncHandler(async (req, res) => {
   const coupon = await Coupon.findById(req.params.id);
 

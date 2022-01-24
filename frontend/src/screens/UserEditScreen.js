@@ -30,20 +30,27 @@ const UserEditScreen = () => {
     success: successUpdate,
   } = userUpdate;
 
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    if (successUpdate) {
-      dispatch({ type: USER_UPDATE_RESET });
-      navigate("/admin/userlist");
-    } else {
-      if (!user.name || user._id !== userId) {
-        dispatch(getUserDetails(userId));
+    if (userInfo && userInfo.isAdmin) {
+      if (successUpdate) {
+        dispatch({ type: USER_UPDATE_RESET });
+        navigate("/admin/userlist");
       } else {
-        setName(user.name);
-        setEmail(user.email);
-        setIsAdmin(user.isAdmin);
+        if (!user.name || user._id !== userId) {
+          dispatch(getUserDetails(userId));
+        } else {
+          setName(user.name);
+          setEmail(user.email);
+          setIsAdmin(user.isAdmin);
+        }
       }
+    } else {
+      navigate("/login");
     }
-  }, [dispatch, navigate, user, userId, successUpdate]);
+  }, [dispatch, navigate, userInfo, user, userId, successUpdate]);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -65,7 +72,7 @@ const UserEditScreen = () => {
           <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="name"
@@ -75,7 +82,7 @@ const UserEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="email">
+            <Form.Group controlId="email" className="mb-3">
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
@@ -85,7 +92,7 @@ const UserEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="isadmin">
+            <Form.Group controlId="isadmin" className="mb-3">
               <Form.Check
                 type="checkbox"
                 label="Is Admin"

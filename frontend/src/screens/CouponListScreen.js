@@ -38,16 +38,15 @@ const CouponListScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch({ type: COUPON_CREATE_RESET });
-
-    if (!userInfo.isAdmin) {
-      navigate("/login");
-    }
-
-    if (successCreate) {
-      navigate(`/admin/coupon/${createdCoupon._id}/edit`);
+    if (userInfo && userInfo.isAdmin) {
+      dispatch({ type: COUPON_CREATE_RESET });
+      if (successCreate) {
+        navigate(`/admin/coupon/${createdCoupon._id}/edit`);
+      } else {
+        dispatch(listCoupons());
+      }
     } else {
-      dispatch(listCoupons());
+      navigate("/login");
     }
   }, [
     dispatch,

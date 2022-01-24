@@ -15,7 +15,7 @@ router
   .post(protect, admin, createCoupon);
 router
   .route("/:id")
-  .get(protect, getCouponByCode)
+  .get(protect, admin, getCouponByCode)
   .delete(protect, admin, deleteCoupon)
   .put(protect, admin, updateCoupon);
 

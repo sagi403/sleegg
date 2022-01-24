@@ -37,25 +37,32 @@ const ProductEditScreen = () => {
     success: successUpdate,
   } = productUpdate;
 
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    if (successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
-      navigate("/admin/productlist");
-    } else {
-      if (!product.name || product._id !== productId) {
-        dispatch(listProductDetails(productId));
+    if (userInfo && userInfo.isAdmin) {
+      if (successUpdate) {
+        dispatch({ type: PRODUCT_UPDATE_RESET });
+        navigate("/admin/productlist");
       } else {
-        setName(product.name);
-        setPrice(product.price);
-        setImage(product.image);
-        setBrand(product.brand);
-        setCategory(product.category);
-        setCountInStock(product.countInStock);
-        setDescription(product.description);
-        setLongDescription(product.longDescription);
+        if (!product.name || product._id !== productId) {
+          dispatch(listProductDetails(productId));
+        } else {
+          setName(product.name);
+          setPrice(product.price);
+          setImage(product.image);
+          setBrand(product.brand);
+          setCategory(product.category);
+          setCountInStock(product.countInStock);
+          setDescription(product.description);
+          setLongDescription(product.longDescription);
+        }
       }
+    } else {
+      navigate("/login");
     }
-  }, [dispatch, navigate, product, productId, successUpdate]);
+  }, [dispatch, navigate, userInfo, product, productId, successUpdate]);
 
   const uploadFileHandler = async e => {
     const file = e.target.files[0];

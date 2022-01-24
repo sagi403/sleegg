@@ -42,16 +42,15 @@ const ProductListScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch({ type: PRODUCT_CREATE_RESET });
-
-    if (!userInfo.isAdmin) {
-      navigate("/login");
-    }
-
-    if (successCreate) {
-      navigate(`/admin/product/${createdProduct._id}/edit`);
+    if (userInfo && userInfo.isAdmin) {
+      dispatch({ type: PRODUCT_CREATE_RESET });
+      if (successCreate) {
+        navigate(`/admin/product/${createdProduct._id}/edit`);
+      } else {
+        dispatch(listProducts("", pageNumber));
+      }
     } else {
-      dispatch(listProducts("", pageNumber));
+      navigate("/login");
     }
   }, [
     dispatch,
