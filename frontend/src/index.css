@@ -52,3 +52,12 @@ h3 {
 .carousel a {
   margin: 0 auto;
 }
+
+.image-size {
+  width: 600px;
+  height: 600px;
+}
+
+.line-break {
+  white-space: pre-line;
+}

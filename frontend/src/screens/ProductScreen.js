@@ -72,7 +72,11 @@ function ProductScreen() {
           <Meta title={product.name} />
           <Row className="mb-4">
             <Col md={6}>
-              <Image src={product.image} alt={product.name} />
+              <Image
+                src={product.image}
+                alt={product.name}
+                className="image-size"
+              />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
@@ -147,7 +151,7 @@ function ProductScreen() {
           <Row className="mb-3">
             <Col md={10}>
               <h2>Description</h2>
-              <ListGroup variant="flush">
+              <ListGroup variant="flush" className="line-break">
                 <ListGroup.Item>{product.longDescription}</ListGroup.Item>
               </ListGroup>
             </Col>
@@ -175,7 +179,7 @@ function ProductScreen() {
                   )}
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
-                      <Form.Group controlId="rating">
+                      <Form.Group controlId="rating" className="mb-3">
                         <Form.Label>Rating</Form.Label>
                         <Form.Control
                           as="select"
@@ -190,7 +194,7 @@ function ProductScreen() {
                           <option value="5">5 - Excellent</option>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group controlId="comment">
+                      <Form.Group controlId="comment" className="mb-3">
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
                           as="textarea"

@@ -21,6 +21,7 @@ const ProductEditScreen = () => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [longDescription, setLongDescription] = useState("");
   const [uploading, setUploading] = useState(false);
 
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const ProductEditScreen = () => {
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
+        setLongDescription(product.longDescription);
       }
     }
   }, [dispatch, navigate, product, productId, successUpdate]);
@@ -90,6 +92,7 @@ const ProductEditScreen = () => {
         category,
         countInStock,
         description,
+        longDescription,
       })
     );
   };
@@ -109,7 +112,7 @@ const ProductEditScreen = () => {
           <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="name"
@@ -119,7 +122,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="price">
+            <Form.Group controlId="price" className="mb-3">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
@@ -129,7 +132,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="image">
+            <Form.Group controlId="image" className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="text"
@@ -145,7 +148,7 @@ const ProductEditScreen = () => {
               {uploading && <Loader />}
             </Form.Group>
 
-            <Form.Group controlId="brand">
+            <Form.Group controlId="brand" className="mb-3">
               <Form.Label>Brand</Form.Label>
               <Form.Control
                 type="text"
@@ -155,7 +158,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="countInStock">
+            <Form.Group controlId="countInStock" className="mb-3">
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
                 type="number"
@@ -165,7 +168,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="category">
+            <Form.Group controlId="category" className="mb-3">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
@@ -175,13 +178,25 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="description">
+            <Form.Group controlId="description" className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
+                row="3"
                 placeholder="Enter description"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="longDescription" className="mb-3">
+              <Form.Label>Long Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                row="5"
+                placeholder="Enter description"
+                value={longDescription}
+                onChange={e => setLongDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
