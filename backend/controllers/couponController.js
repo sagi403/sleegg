@@ -52,4 +52,29 @@ const deleteCoupon = asyncHandler(async (req, res) => {
   }
 });
 
-export { getCoupons, getCouponByCode, createCoupon, deleteCoupon };
+// @desc    Update a coupon
+// @route   PUT /api/coupons/:id
+// @access  Private/Admin
+const updateCoupon = asyncHandler(async (req, res) => {
+  const { code, discount } = req.body;
+
+  const coupon = await Coupon.findById(req.params.id);
+
+  if (coupon) {
+    coupon.code = code;
+    coupon.discount = discount;
+
+    const updatedCoupon = await coupon.save();
+    res.json(updatedCoupon);
+  } else {
+    res.status(404);
+    throw new Error("Coupon not found");
+  }
+});
+export {
+  getCoupons,
+  getCouponByCode,
+  createCoupon,
+  deleteCoupon,
+  updateCoupon,
+};
