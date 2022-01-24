@@ -5,8 +5,8 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listCoupons } from "../actions/couponActions";
-import { COUPON_LIST_RESET } from "../constants/couponConstants";
+import { listCoupons, createCoupon } from "../actions/couponActions";
+import { COUPON_CREATE_RESET } from "../constants/couponConstants";
 
 const CouponListScreen = () => {
   const params = useParams();
@@ -23,37 +23,36 @@ const CouponListScreen = () => {
   //   success: successDelete,
   // } = productDelete;
 
-  // const productCreate = useSelector(state => state.productCreate);
-  // const {
-  //   loading: loadingCreate,
-  //   error: errorCreate,
-  //   success: successCreate,
-  //   product: createdProduct,
-  // } = productCreate;
+  const couponCreate = useSelector(state => state.couponCreate);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    coupon: createdCoupon,
+  } = couponCreate;
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    // dispatch({ type: PRODUCT_CREATE_RESET });
+    dispatch({ type: COUPON_CREATE_RESET });
 
     if (!userInfo.isAdmin) {
       navigate("/login");
     }
-    dispatch(listCoupons());
 
-    // if (successCreate) {
-    //   navigate(`/admin/product/${createdProduct._id}/edit`);
-    // } else {
-    //   dispatch(listProducts("", pageNumber));
-    // }
+    if (successCreate) {
+      navigate(`/admin/coupon/${createdCoupon._id}/edit`);
+    } else {
+      dispatch(listCoupons());
+    }
   }, [
     dispatch,
     navigate,
     userInfo,
     // successDelete,
-    // successCreate,
-    // createdProduct,
+    successCreate,
+    createdCoupon,
   ]);
 
   // const deleteHandler = id => {
@@ -62,9 +61,9 @@ const CouponListScreen = () => {
   //   }
   // };
 
-  // const createProductHandler = () => {
-  //   dispatch(createProduct());
-  // };
+  const createCouponHandler = () => {
+    dispatch(createCoupon());
+  };
 
   return (
     <>
@@ -72,16 +71,16 @@ const CouponListScreen = () => {
         <Col>
           <h1>Coupons</h1>
         </Col>
-        {/* <Col className="text-end">
-          <Button className="my-3" onClick={createProductHandler}>
+        <Col className="text-end">
+          <Button className="my-3" onClick={createCouponHandler}>
             <i className="fas fa-plus"></i> Create Coupons
           </Button>
-        </Col> */}
+        </Col>
       </Row>
       {/* {loadingDelete && <Loader />}
-      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>} */}
       {loadingCreate && <Loader />}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

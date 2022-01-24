@@ -7,7 +7,7 @@ const couponSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    code: { type: String, required: true, unique: true },
+    code: { type: String, required: true },
     discount: { type: Number, required: true },
   },
   { timestamps: true }
