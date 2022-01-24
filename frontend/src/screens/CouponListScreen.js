@@ -5,23 +5,26 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listCoupons, createCoupon } from "../actions/couponActions";
+import {
+  listCoupons,
+  createCoupon,
+  deleteCoupon,
+} from "../actions/couponActions";
 import { COUPON_CREATE_RESET } from "../constants/couponConstants";
 
 const CouponListScreen = () => {
-  const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const couponList = useSelector(state => state.couponList);
   const { loading, error, coupons } = couponList;
 
-  // const productDelete = useSelector(state => state.productDelete);
-  // const {
-  //   loading: loadingDelete,
-  //   error: errorDelete,
-  //   success: successDelete,
-  // } = productDelete;
+  const couponDelete = useSelector(state => state.couponDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = couponDelete;
 
   const couponCreate = useSelector(state => state.couponCreate);
   const {
@@ -50,16 +53,16 @@ const CouponListScreen = () => {
     dispatch,
     navigate,
     userInfo,
-    // successDelete,
+    successDelete,
     successCreate,
     createdCoupon,
   ]);
 
-  // const deleteHandler = id => {
-  //   if (window.confirm("Are you sure")) {
-  //     dispatch(deleteProduct(id));
-  //   }
-  // };
+  const deleteHandler = id => {
+    if (window.confirm("Are you sure")) {
+      dispatch(deleteCoupon(id));
+    }
+  };
 
   const createCouponHandler = () => {
     dispatch(createCoupon());
@@ -77,8 +80,8 @@ const CouponListScreen = () => {
           </Button>
         </Col>
       </Row>
-      {/* {loadingDelete && <Loader />}
-      {errorDelete && <Message variant="danger">{errorDelete}</Message>} */}
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       {loadingCreate && <Loader />}
       {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
@@ -111,7 +114,7 @@ const CouponListScreen = () => {
                     <Button
                       variant="danger"
                       className="btn-sm"
-                      // onClick={() => deleteHandler(coupon._id)}
+                      onClick={() => deleteHandler(coupon._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>

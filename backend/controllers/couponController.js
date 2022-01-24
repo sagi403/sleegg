@@ -37,4 +37,19 @@ const createCoupon = asyncHandler(async (req, res) => {
   res.status(201).json(createdCoupon);
 });
 
-export { getCoupons, getCouponByCode, createCoupon };
+// @desc    Delete a coupon
+// @route   DELETE /api/coupons/:id
+// @access  Private/Admin
+const deleteCoupon = asyncHandler(async (req, res) => {
+  const coupon = await Coupon.findById(req.params.id);
+
+  if (coupon) {
+    await coupon.remove();
+    res.json({ message: "Coupon removed" });
+  } else {
+    res.status(404);
+    throw new Error("Coupon not found");
+  }
+});
+
+export { getCoupons, getCouponByCode, createCoupon, deleteCoupon };
