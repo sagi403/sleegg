@@ -10,10 +10,10 @@ const getCoupons = asyncHandler(async (req, res) => {
 });
 
 // @desc    Fetch single coupon
-// @route   GET /api/coupons/:id
-// @access  Private/Admin
+// @route   GET /api/coupons/:code
+// @access  Private
 const getCouponByCode = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findById(req.params.id);
+  const coupon = await Coupon.find({ code: req.params.code });
 
   if (coupon) {
     res.json(coupon);
@@ -71,6 +71,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
     throw new Error("Coupon not found");
   }
 });
+
 export {
   getCoupons,
   getCouponByCode,

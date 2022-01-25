@@ -109,7 +109,7 @@ export const deleteCoupon = id => async (dispatch, getState) => {
   }
 };
 
-export const listCouponDetails = id => async (dispatch, getState) => {
+export const listCouponDetails = code => async (dispatch, getState) => {
   try {
     dispatch({ type: COUPON_DETAILS_REQUEST });
 
@@ -124,7 +124,7 @@ export const listCouponDetails = id => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/coupons/${id}`, config);
+    const { data } = await axios.get(`/api/coupons/${code}`, config);
 
     dispatch({
       type: COUPON_DETAILS_SUCCESS,

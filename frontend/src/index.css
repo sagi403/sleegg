@@ -61,3 +61,11 @@ h3 {
 .line-break {
   white-space: pre-line;
 }
+
+.inline-el {
+  display: inline;
+}
+
+.coupon-message {
+  color: red;
+}

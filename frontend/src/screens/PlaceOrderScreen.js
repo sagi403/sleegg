@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
+import Loader from "../components/Loader";
+import { listCouponDetails } from "../actions/couponActions";
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,11 @@ const PlaceOrderScreen = () => {
   const cart = useSelector(state => state.cart);
 
   const [code, setCode] = useState("");
+  const [couponCheck, setCouponCheck] = useState(false);
+  const [couponFound, setCouponFound] = useState(false);
+  const [message, setMessage] = useState(
+    "You can only enter one coupon at a time"
+  );
 
   // Calculate items price
   cart.itemsPrice = cart.cartItems
@@ -40,14 +47,60 @@ const PlaceOrderScreen = () => {
     Number(cart.taxPrice)
   ).toFixed(2);
 
+  const [cartItemsPrice, setCartItemsPrice] = useState(+cart.itemsPrice);
+  const [cartTotalPrice, setCartTotalPrice] = useState(+cart.totalPrice);
+
   const orderCreate = useSelector(state => state.orderCreate);
   const { order, success, error } = orderCreate;
 
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const couponDetails = useSelector(state => state.couponDetails);
+  const { loading: loadingCoupon, error: errorCoupon, coupon } = couponDetails;
+
   useEffect(() => {
-    if (success) {
-      navigate(`/order/${order._id}`);
+    if (userInfo) {
+      if (success) {
+        navigate(`/order/${order._id}`);
+      } else {
+        if (couponCheck) {
+          if (Object.keys(coupon).length !== 0) {
+            setCouponFound(true);
+            setMessage("");
+
+            cart.itemsPrice = Number(
+              cart.itemsPrice * (1 - coupon[0].discount / 100)
+            ).toFixed(2);
+            setCartItemsPrice(+cart.itemsPrice);
+            console.log(typeof cartItemsPrice);
+
+            cart.totalPrice = (
+              Number(cart.itemsPrice) +
+              Number(cart.shippingPrice) +
+              Number(cart.taxPrice)
+            ).toFixed(2);
+            setCartTotalPrice(+cart.totalPrice);
+          } else {
+            setCouponFound(false);
+            setMessage("Coupon not found");
+          }
+        }
+      }
+    } else {
+      navigate("/login");
     }
-  }, [navigate, success, order]);
+  }, [
+    navigate,
+    userInfo,
+    cart,
+    success,
+    order,
+    coupon,
+    couponCheck,
+    cartItemsPrice,
+    cartTotalPrice,
+  ]);
 
   const placeOrderHandler = () => {
     dispatch(
@@ -55,16 +108,18 @@ const PlaceOrderScreen = () => {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
+        itemsPrice: cartItemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
+        totalPrice: cartTotalPrice,
       })
     );
   };
 
   const checkCouponHandler = () => {
-    console.log("OK");
+    navigate(`/placeorder/${code}`);
+    dispatch(listCouponDetails(code));
+    setCouponCheck(true);
   };
 
   return (
@@ -133,7 +188,7 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${cartItemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -151,7 +206,7 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${cartTotalPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -171,12 +226,28 @@ const PlaceOrderScreen = () => {
               </ListGroup.Item>
 
               <ListGroup.Item>
-                <Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Label>Coupon Code</Form.Label>
                   </Col>
                 </Row>
-                <Row>
+
+                {loadingCoupon && <Loader />}
+                {errorCoupon && (
+                  <Message variant="danger">{errorCoupon}</Message>
+                )}
+                {couponFound ? (
+                  <Form.Text>
+                    <h5 className="inline-el">
+                      {Object.keys(coupon).length !== 0 && coupon[0].code}
+                    </h5>{" "}
+                    is applied
+                  </Form.Text>
+                ) : (
+                  ""
+                )}
+
+                <Row className="mt-3">
                   <Col md={8}>
                     <Form.Control
                       type="code"
@@ -199,8 +270,14 @@ const PlaceOrderScreen = () => {
                   </Col>
                 </Row>
 
-                <Form.Text muted>
-                  You can only enter one coupon at a time
+                <Form.Text
+                  className={
+                    message === "Coupon not found" && !couponFound
+                      ? "coupon-message"
+                      : ""
+                  }
+                >
+                  {!couponFound && message}
                 </Form.Text>
               </ListGroup.Item>
             </ListGroup>
