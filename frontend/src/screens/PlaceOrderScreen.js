@@ -1,7 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import {
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Form,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -11,6 +19,8 @@ const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector(state => state.cart);
+
+  const [code, setCode] = useState("");
 
   // Calculate items price
   cart.itemsPrice = cart.cartItems
@@ -51,6 +61,10 @@ const PlaceOrderScreen = () => {
         totalPrice: cart.totalPrice,
       })
     );
+  };
+
+  const checkCouponHandler = () => {
+    console.log("OK");
   };
 
   return (
@@ -154,6 +168,40 @@ const PlaceOrderScreen = () => {
                 >
                   Place Order
                 </Button>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <Form.Label>Coupon Code</Form.Label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={8}>
+                    <Form.Control
+                      type="code"
+                      placeholder="Enter code"
+                      value={code}
+                      onChange={e => setCode(e.target.value)}
+                    ></Form.Control>
+                  </Col>
+                  <Col>
+                    <Button
+                      size="sm"
+                      className="mb-3"
+                      type="button"
+                      disabled={cart.cartItems === 0}
+                      onClick={checkCouponHandler}
+                      variant="outline-primary"
+                    >
+                      Check Code
+                    </Button>
+                  </Col>
+                </Row>
+
+                <Form.Text muted>
+                  You can only enter one coupon at a time
+                </Form.Text>
               </ListGroup.Item>
             </ListGroup>
           </Card>
