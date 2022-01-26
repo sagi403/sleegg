@@ -49,6 +49,8 @@ const PlaceOrderScreen = () => {
 
   const [cartItemsPrice, setCartItemsPrice] = useState(+cart.itemsPrice);
   const [cartTotalPrice, setCartTotalPrice] = useState(+cart.totalPrice);
+  const itemsPriceBeforeCoupon = +cart.itemsPrice;
+  const totalPriceBeforeCoupon = +cart.totalPrice;
 
   const orderCreate = useSelector(state => state.orderCreate);
   const { order, success, error } = orderCreate;
@@ -188,7 +190,14 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cartItemsPrice}</Col>
+                  {itemsPriceBeforeCoupon !== cartItemsPrice ? (
+                    <Col>
+                      <strike>${itemsPriceBeforeCoupon}</strike> $
+                      {cartItemsPrice}
+                    </Col>
+                  ) : (
+                    <Col>${cartItemsPrice}</Col>
+                  )}
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -206,7 +215,14 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cartTotalPrice}</Col>
+                  {totalPriceBeforeCoupon !== cartTotalPrice ? (
+                    <Col>
+                      <strike>${totalPriceBeforeCoupon}</strike> $
+                      {cartTotalPrice}
+                    </Col>
+                  ) : (
+                    <Col>${cartTotalPrice}</Col>
+                  )}
                 </Row>
               </ListGroup.Item>
 
