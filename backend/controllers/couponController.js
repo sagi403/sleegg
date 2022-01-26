@@ -9,8 +9,22 @@ const getCoupons = asyncHandler(async (req, res) => {
   res.json(coupons);
 });
 
-// @desc    Fetch single coupon
-// @route   GET /api/coupons/:code
+// @desc    Fetch single coupon with Id
+// @route   GET /api/coupons/:id
+// @access  Private/Admin
+const getCouponById = asyncHandler(async (req, res) => {
+  const coupon = await Coupon.findById(req.params.id);
+
+  if (coupon) {
+    res.json(coupon);
+  } else {
+    res.status(404);
+    throw new Error("Coupon not found");
+  }
+});
+
+// @desc    Fetch single coupon with code
+// @route   GET /api/coupons/1/:code
 // @access  Private
 const getCouponByCode = asyncHandler(async (req, res) => {
   const coupon = await Coupon.find({ code: req.params.code });
@@ -29,7 +43,7 @@ const getCouponByCode = asyncHandler(async (req, res) => {
 const createCoupon = asyncHandler(async (req, res) => {
   const coupon = new Coupon({
     user: req.user._id,
-    code: "Dummy Code",
+    code: `Coupon${(await Coupon.find({})).length + 1}`,
     discount: 10,
   });
 
@@ -74,6 +88,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
 
 export {
   getCoupons,
+  getCouponById,
   getCouponByCode,
   createCoupon,
   deleteCoupon,

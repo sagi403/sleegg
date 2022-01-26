@@ -16,6 +16,7 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
 import Loader from "../components/Loader";
 import { listCouponDetails } from "../actions/couponActions";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const PlaceOrderScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
+      dispatch({ type: ORDER_CREATE_RESET });
       if (success) {
         navigate(`/order/${order._id}`);
       } else {
@@ -75,7 +77,6 @@ const PlaceOrderScreen = () => {
               cart.itemsPrice * (1 - coupon[0].discount / 100)
             ).toFixed(2);
             setCartItemsPrice(+cart.itemsPrice);
-            console.log(typeof cartItemsPrice);
 
             cart.totalPrice = (
               Number(cart.itemsPrice) +
@@ -93,6 +94,7 @@ const PlaceOrderScreen = () => {
       navigate("/login");
     }
   }, [
+    dispatch,
     navigate,
     userInfo,
     cart,

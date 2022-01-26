@@ -8,7 +8,7 @@ const couponSchema = new mongoose.Schema(
       ref: "User",
     },
     code: { type: String, required: true },
-    discount: { type: Number, required: true },
+    discount: { type: Number, required: true, unique: true },
   },
   { timestamps: true }
 );

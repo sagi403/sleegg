@@ -124,7 +124,7 @@ export const listCouponDetails = code => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/coupons/${code}`, config);
+    const { data } = await axios.get(`/api/coupons/1/${code}`, config);
 
     dispatch({
       type: COUPON_DETAILS_SUCCESS,
