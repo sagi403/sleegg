@@ -109,7 +109,39 @@ export const deleteCoupon = id => async (dispatch, getState) => {
   }
 };
 
-export const listCouponDetails = code => async (dispatch, getState) => {
+export const listCouponDetails = id => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COUPON_DETAILS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/coupons/${id}`, config);
+
+    dispatch({
+      type: COUPON_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COUPON_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const userCoupon = code => async (dispatch, getState) => {
   try {
     dispatch({ type: COUPON_DETAILS_REQUEST });
 

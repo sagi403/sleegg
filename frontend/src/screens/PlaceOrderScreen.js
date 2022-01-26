@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
-import Loader from "../components/Loader";
-import { listCouponDetails } from "../actions/couponActions";
+import LoaderSmall from "../components/LoaderSmall";
+import { userCoupon } from "../actions/couponActions";
 import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 
 const PlaceOrderScreen = () => {
@@ -59,8 +59,12 @@ const PlaceOrderScreen = () => {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
-  const couponDetails = useSelector(state => state.couponDetails);
-  const { loading: loadingCoupon, error: errorCoupon, coupon } = couponDetails;
+  const userCouponDetails = useSelector(state => state.userCouponDetails);
+  const {
+    loading: loadingCoupon,
+    error: errorCoupon,
+    coupon,
+  } = userCouponDetails;
 
   useEffect(() => {
     if (userInfo) {
@@ -121,8 +125,8 @@ const PlaceOrderScreen = () => {
   };
 
   const checkCouponHandler = () => {
-    navigate(`/placeorder/${code}`);
-    dispatch(listCouponDetails(code));
+    navigate(`/placeorder/1/${code}`);
+    dispatch(userCoupon(code));
     setCouponCheck(true);
   };
 
@@ -250,7 +254,7 @@ const PlaceOrderScreen = () => {
                   </Col>
                 </Row>
 
-                {loadingCoupon && <Loader />}
+                {loadingCoupon && <LoaderSmall />}
                 {errorCoupon && (
                   <Message variant="danger">{errorCoupon}</Message>
                 )}

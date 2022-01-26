@@ -62,6 +62,7 @@ const reducer = combineReducers({
   couponCreate: couponCreateReducer,
   couponDelete: couponDeleteReducer,
   couponDetails: couponDetailsReducer,
+  userCouponDetails: couponDetailsReducer,
   couponUpdate: couponUpdateReducer,
 });
 
