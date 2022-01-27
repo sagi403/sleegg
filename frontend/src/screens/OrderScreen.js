@@ -11,12 +11,12 @@ import {
   getOrderDetails,
   payOrder,
   deliverOrder,
-  listMyOrders,
 } from "../actions/orderActions";
 import {
   ORDER_DELIVER_RESET,
   ORDER_PAY_RESET,
 } from "../constants/orderConstants";
+import { USER_DETAILS_RESET } from "../constants/userConstants";
 
 const OrderScreen = () => {
   const params = useParams();
@@ -58,8 +58,8 @@ const OrderScreen = () => {
     if (!order || successPay || successDeliver || order._id !== orderId) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
+      dispatch({ type: USER_DETAILS_RESET });
       dispatch(getOrderDetails(orderId));
-      dispatch(listMyOrders());
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPayPalScript();
