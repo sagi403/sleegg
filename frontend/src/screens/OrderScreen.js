@@ -11,6 +11,7 @@ import {
   getOrderDetails,
   payOrder,
   deliverOrder,
+  listMyOrders,
 } from "../actions/orderActions";
 import {
   ORDER_DELIVER_RESET,
@@ -58,6 +59,7 @@ const OrderScreen = () => {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
+      dispatch(listMyOrders());
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPayPalScript();
@@ -93,6 +95,11 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
+      {userInfo.isAdmin && (
+        <Link to="/admin/orderlist" className="btn btn-light my-3">
+          Go Back
+        </Link>
+      )}
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>

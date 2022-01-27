@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
-import { createOrder } from "../actions/orderActions";
+import { createOrder, listMyOrders } from "../actions/orderActions";
 import LoaderSmall from "../components/LoaderSmall";
 import { userCoupon } from "../actions/couponActions";
 import { ORDER_CREATE_RESET } from "../constants/orderConstants";
@@ -70,6 +70,7 @@ const PlaceOrderScreen = () => {
     if (userInfo) {
       dispatch({ type: ORDER_CREATE_RESET });
       if (success) {
+        dispatch(listMyOrders());
         navigate(`/order/${order._id}`);
       } else {
         if (couponCheck) {
@@ -125,9 +126,11 @@ const PlaceOrderScreen = () => {
   };
 
   const checkCouponHandler = () => {
-    navigate(`/placeorder/1/${code}`);
-    dispatch(userCoupon(code));
-    setCouponCheck(true);
+    if (code.trim()) {
+      navigate(`/placeorder/1/${code}`);
+      dispatch(userCoupon(code));
+      setCouponCheck(true);
+    }
   };
 
   return (
